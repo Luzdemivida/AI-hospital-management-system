@@ -158,13 +158,13 @@ public class QueueController : ControllerBase
     [HttpGet("{queueId}/summary")]
 public async Task<IActionResult> Summary(int queueId)
 {
-    return Ok(await _queueService.GetQueueSummaryAsync(queueId));
+    return Ok(await _queueService.GetPatientSummaryAsync(queueId));
 }
 
 [HttpPost("{queueId}/refresh-ai")]
 public async Task<IActionResult> RefreshAI(int queueId)
 {
-    await _queueService.RefreshPredictionAsync(queueId);
+    await _queueService.RegeneratePredictionAsync(queueId);
 
     return Ok("AI Prediction Updated");
 }
@@ -172,7 +172,7 @@ public async Task<IActionResult> RefreshAI(int queueId)
 [HttpGet("patient-summary/{appointmentId}")]
 public async Task<IActionResult> PatientSummary(int appointmentId)
 {
-    return Ok(await _queueService.GeneratePatientSummaryAsync(appointmentId));
+    return Ok(await _queueService.GetQueueSummaryAsync());
 }
 }
 

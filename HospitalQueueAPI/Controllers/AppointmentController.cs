@@ -32,6 +32,9 @@ public class AppointmentController : ControllerBase
     public async Task<IActionResult> BookAppointment(
         CreateAppointmentDto request)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var userId = GetCurrentUserId();
 
         var result =
@@ -39,10 +42,10 @@ public class AppointmentController : ControllerBase
                 userId,
                 request);
 
-        if (result == null)
-            return BadRequest("Unable to book appointment.");
+        if (!result.Success)
+            return BadRequest(new { message = result.ErrorMessage });
 
-        return Ok(result);
+        return Ok(result.Appointment);
     }
 
     [HttpGet("my")]

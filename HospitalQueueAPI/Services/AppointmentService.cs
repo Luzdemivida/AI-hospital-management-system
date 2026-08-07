@@ -9,46 +9,53 @@ namespace HospitalQueueAPI.Services;
 public class AppointmentService : IAppointmentService
 {
     private readonly ApplicationDbContext _context;
-private readonly IQueueService _queueService;
+    private readonly IQueueService _queueService;
 
     public AppointmentService(
-    ApplicationDbContext context,
-    IQueueService queueService)
-{
-    _context = context;
-    _queueService = queueService;
-}
+        ApplicationDbContext context,
+        IQueueService queueService)
+    {
+        _context = context;
+        _queueService = queueService;
+    }
 
-    public async Task<AppointmentResponseDto?> CreateAppointmentAsync(
+    public async Task<AppointmentCreationResult> CreateAppointmentAsync(
         int userId,
         CreateAppointmentDto request)
     {
-        // Find patient
         var patient = await _context.Patients
             .FirstOrDefaultAsync(p => p.UserId == userId);
 
         if (patient == null)
-            return null;
+        {
+            return new AppointmentCreationResult
+            {
+                Success = false,
+                ErrorMessage = "Patient profile not found. Create a patient profile before booking an appointment."
+            };
+        }
 
-        // Find doctor
         var doctor = await _context.Doctors
             .Include(d => d.User)
             .Include(d => d.Department)
             .FirstOrDefaultAsync(d => d.UserId == request.DoctorId);
 
         if (doctor == null)
-            return null;
+        {
+            return new AppointmentCreationResult
+            {
+                Success = false,
+                ErrorMessage = $"Doctor not found for DoctorId {request.DoctorId}."
+            };
+        }
 
         var appointment = new Appointment
         {
             PatientId = patient.UserId,
             DoctorId = doctor.UserId,
-
-            AppointmentDate = DateOnly.FromDateTime(request.AppointmentDate),
-            AppointmentTime = TimeOnly.FromDateTime(request.AppointmentDate),
-
+            AppointmentDate = DateOnly.FromDateTime(request.AppointmentDate!.Value),
+            AppointmentTime = TimeOnly.FromDateTime(request.AppointmentDate.Value),
             Reason = request.Reason,
-
             BookingType = "Online",
             Priority = "Normal",
             Status = "Pending",
@@ -58,31 +65,24 @@ private readonly IQueueService _queueService;
         _context.Appointments.Add(appointment);
 
         await _context.SaveChangesAsync();
-        // Automatically generate queue entry
+
         await _queueService.GenerateQueueEntryAsync(appointment.Id);
 
         var user = await _context.Users
             .FirstAsync(u => u.Id == userId);
 
-        return new AppointmentResponseDto
+        return new AppointmentCreationResult
         {
-            AppointmentId = appointment.Id,
-
-            PatientName =
-                $"{user.FirstName} {user.LastName}",
-
-            DoctorName =
-                $"{doctor.User.FirstName} {doctor.User.LastName}",
-
-            Department =
-                doctor.Department.DepartmentName,
-
-            AppointmentDate =
-                appointment.AppointmentDate.ToDateTime(
-                    appointment.AppointmentTime),
-
-            Status =
-                appointment.Status ?? "Pending"
+            Success = true,
+            Appointment = new AppointmentResponseDto
+            {
+                AppointmentId = appointment.Id,
+                PatientName = $"{user.FirstName} {user.LastName}",
+                DoctorName = $"{doctor.User.FirstName} {doctor.User.LastName}",
+                Department = doctor.Department.DepartmentName,
+                AppointmentDate = appointment.AppointmentDate.ToDateTime(appointment.AppointmentTime),
+                Status = appointment.Status ?? "Pending"
+            }
         };
     }
 

@@ -11,10 +11,12 @@ namespace HospitalQueueAPI.Controllers;
 public class DoctorController : ControllerBase
 {
     private readonly IDoctorService _doctorService;
+    private readonly IQueueService _queueService;
 
-    public DoctorController(IDoctorService doctorService)
+    public DoctorController(IDoctorService doctorService, IQueueService queueService)
     {
         _doctorService = doctorService;
+        _queueService = queueService;
     }
 
     // ============================================================
@@ -76,17 +78,31 @@ public class DoctorController : ControllerBase
 
         return Ok(result);
     }
-}
-//============================================================
-// AI Queue Summary
-//============================================================
-[HttpGet("ai-summary")]
-public async Task<IActionResult> AiSummary()
-{
-    var doctorId = int.Parse(User.FindFirst("sub")!.Value);
 
-    var summary =
-        await _queueService.GetAiQueueSummaryAsync(doctorId);
+    // ============================================================
+    // GET DOCTORS
+    // ============================================================
 
-    return Ok(summary);
+    [AllowAnonymous]
+    [HttpGet("list")]
+    public async Task<IActionResult> GetDoctors()
+    {
+        var result = await _doctorService.GetAllDoctorsAsync();
+        return Ok(result);
+    }
+
+    // ============================================================
+    // AI Queue Summary
+    // ============================================================
+
+    [HttpGet("ai-summary")]
+    public async Task<IActionResult> AiSummary()
+    {
+        var doctorId = int.Parse(User.FindFirst("sub")!.Value);
+
+        var summary =
+            await _queueService.GetAiQueueSummaryAsync(doctorId);
+
+        return Ok(summary);
+    }
 }

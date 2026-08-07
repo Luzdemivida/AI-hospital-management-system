@@ -8,15 +8,15 @@ namespace HospitalQueueAPI.Services;
 public class DoctorService : IDoctorService
 {
     private readonly ApplicationDbContext _context;
-private readonly IQueueService _queueService;
+    private readonly IQueueService _queueService;
 
-public DoctorService(
-    ApplicationDbContext context,
-    IQueueService queueService)
-{
-    _context = context;
-    _queueService = queueService;
-}
+    public DoctorService(
+        ApplicationDbContext context,
+        IQueueService queueService)
+    {
+        _context = context;
+        _queueService = queueService;
+    }
     // ============================================================
     // TODAY'S PATIENTS
     // ============================================================
@@ -205,5 +205,20 @@ public DoctorService(
                 q.EstimatedWaitTime ?? 0
 
         }).ToList();
+    }
+
+    public async Task<List<DoctorListDto>> GetAllDoctorsAsync()
+    {
+        return await _context.Doctors
+            .Include(d => d.User)
+            .Include(d => d.Department)
+            .Select(d => new DoctorListDto
+            {
+                DoctorId = d.UserId,
+                FullName = $"{d.User.FirstName} {d.User.LastName}",
+                Department = d.Department.DepartmentName,
+                Specialization = d.Specialization ?? string.Empty
+            })
+            .ToListAsync();
     }
 }

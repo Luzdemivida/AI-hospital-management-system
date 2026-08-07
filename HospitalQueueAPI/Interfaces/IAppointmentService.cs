@@ -4,7 +4,7 @@ namespace HospitalQueueAPI.Interfaces
 {
     public interface IAppointmentService
     {
-        Task<AppointmentResponseDto?> CreateAppointmentAsync(
+        Task<AppointmentCreationResult> CreateAppointmentAsync(
             int userId,
             CreateAppointmentDto request);
 

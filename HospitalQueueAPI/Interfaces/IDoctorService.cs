@@ -9,4 +9,6 @@ public interface IDoctorService
     Task<DoctorDashboardDto?> GetCurrentPatientAsync(int doctorUserId);
 
     Task<List<DoctorDashboardDto>> GetCompletedPatientsAsync(int doctorUserId);
+
+    Task<List<DoctorListDto>> GetAllDoctorsAsync();
 }

@@ -1,0 +1,92 @@
+using System.Security.Claims;
+using HospitalQueueAPI.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace HospitalQueueAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[Authorize(Roles = "Doctor")]
+public class DoctorController : ControllerBase
+{
+    private readonly IDoctorService _doctorService;
+
+    public DoctorController(IDoctorService doctorService)
+    {
+        _doctorService = doctorService;
+    }
+
+    // ============================================================
+    // GET TODAY'S PATIENTS
+    // ============================================================
+
+    [HttpGet("today")]
+    public async Task<IActionResult> GetTodaysPatients()
+    {
+        var doctorIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (doctorIdClaim == null)
+            return Unauthorized();
+
+        int doctorUserId = int.Parse(doctorIdClaim.Value);
+
+        var result = await _doctorService.GetTodaysPatientsAsync(doctorUserId);
+
+        return Ok(result);
+    }
+
+    // ============================================================
+    // GET CURRENT PATIENT
+    // ============================================================
+
+    [HttpGet("current")]
+    public async Task<IActionResult> GetCurrentPatient()
+    {
+        var doctorIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (doctorIdClaim == null)
+            return Unauthorized();
+
+        int doctorUserId = int.Parse(doctorIdClaim.Value);
+
+        var result = await _doctorService.GetCurrentPatientAsync(doctorUserId);
+
+        if (result == null)
+            return NotFound("No patient is currently being served.");
+
+        return Ok(result);
+    }
+
+    // ============================================================
+    // GET COMPLETED PATIENTS
+    // ============================================================
+
+    [HttpGet("completed")]
+    public async Task<IActionResult> GetCompletedPatients()
+    {
+        var doctorIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (doctorIdClaim == null)
+            return Unauthorized();
+
+        int doctorUserId = int.Parse(doctorIdClaim.Value);
+
+        var result = await _doctorService.GetCompletedPatientsAsync(doctorUserId);
+
+        return Ok(result);
+    }
+}
+//============================================================
+// AI Queue Summary
+//============================================================
+[HttpGet("ai-summary")]
+public async Task<IActionResult> AiSummary()
+{
+    var doctorId = int.Parse(User.FindFirst("sub")!.Value);
+
+    var summary =
+        await _queueService.GetAiQueueSummaryAsync(doctorId);
+
+    return Ok(summary);
+}

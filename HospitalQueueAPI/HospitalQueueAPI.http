@@ -1,0 +1,6 @@
+@HospitalQueueAPI_HostAddress = http://localhost:5171
+
+GET {{HospitalQueueAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

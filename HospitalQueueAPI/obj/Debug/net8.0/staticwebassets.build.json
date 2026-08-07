@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "OIg7YJnVILIl04qZkDF7JV9mo5v+E4j9o/4rnYeuxaU=",
+  "Source": "HospitalQueueAPI",
+  "BasePath": "_content/HospitalQueueAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

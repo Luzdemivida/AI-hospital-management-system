@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System\\HospitalQueueAPI\\HospitalQueueAPI.csproj": {}
+    "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System(backup)\\HospitalQueueAPI\\HospitalQueueAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System\\HospitalQueueAPI\\HospitalQueueAPI.csproj": {
+    "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System(backup)\\HospitalQueueAPI\\HospitalQueueAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System\\HospitalQueueAPI\\HospitalQueueAPI.csproj",
+        "projectUniqueName": "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System(backup)\\HospitalQueueAPI\\HospitalQueueAPI.csproj",
         "projectName": "HospitalQueueAPI",
-        "projectPath": "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System\\HospitalQueueAPI\\HospitalQueueAPI.csproj",
+        "projectPath": "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System(backup)\\HospitalQueueAPI\\HospitalQueueAPI.csproj",
         "packagesPath": "C:\\Users\\KRLOSCOMPUTER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System\\HospitalQueueAPI\\obj\\",
+        "outputPath": "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System(backup)\\HospitalQueueAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\KRLOSCOMPUTER\\AppData\\Roaming\\NuGet\\NuGet.Config"

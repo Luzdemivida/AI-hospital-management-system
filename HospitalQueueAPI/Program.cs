@@ -1,3 +1,4 @@
+using System.Data;
 using System.Text;
 using HospitalQueueAPI.Data;
 using HospitalQueueAPI.Interfaces;
@@ -70,6 +71,23 @@ builder.Services
 
     options.SaveToken = true;
 
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/queueHub"))
+            {
+                context.Token = accessToken;
+            }
+
+            return Task.CompletedTask;
+        }
+    };
+
     options.TokenValidationParameters =
         new TokenValidationParameters
         {
@@ -110,6 +128,7 @@ builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<NotificationService>();
 builder.Services.AddHttpClient<IOllamaService, OllamaService>();
 
 
@@ -171,6 +190,42 @@ builder.Services.AddSwaggerGen(options =>
 // =======================================================
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    var connection = dbContext.Database.GetDbConnection();
+    if (connection.State != ConnectionState.Open)
+        await connection.OpenAsync();
+
+    var columns = new List<string>();
+
+    using (var command = connection.CreateCommand())
+    {
+        command.CommandText = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'patients';";
+
+        using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            columns.Add(reader.GetString(0));
+        }
+    }
+
+    if (!columns.Contains("age", StringComparer.OrdinalIgnoreCase))
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = "ALTER TABLE patients ADD COLUMN age INT NULL;";
+        await command.ExecuteNonQueryAsync();
+    }
+
+    if (!columns.Contains("occupation", StringComparer.OrdinalIgnoreCase))
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = "ALTER TABLE patients ADD COLUMN occupation VARCHAR(100) NULL;";
+        await command.ExecuteNonQueryAsync();
+    }
+}
 
 // =======================================================
 // MIDDLEWARE

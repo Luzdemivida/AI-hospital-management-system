@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using HospitalQueueAPI.DTOs.Doctor;
 using HospitalQueueAPI.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -104,5 +105,33 @@ public class DoctorController : ControllerBase
             await _queueService.GetAiQueueSummaryAsync(doctorId);
 
         return Ok(summary);
+    }
+
+    // ============================================================
+    // Doctor Profile
+    // ============================================================
+
+    [HttpGet("profile")]
+    public async Task<IActionResult> GetProfile()
+    {
+        var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var result = await _doctorService.GetProfileAsync(doctorId);
+
+        if (result == null)
+            return NotFound(new { message = "Doctor profile not found." });
+
+        return Ok(result);
+    }
+
+    [HttpPut("profile")]
+    public async Task<IActionResult> UpdateProfile(UpdateDoctorProfileDto request)
+    {
+        var doctorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var result = await _doctorService.UpdateProfileAsync(doctorId, request);
+
+        if (result == null)
+            return NotFound(new { message = "Doctor profile not found." });
+
+        return Ok(new { success = true, message = "Profile updated successfully.", data = result });
     }
 }

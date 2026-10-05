@@ -1,0 +1,2785 @@
+/* ==========================================================
+   GLOBAL RESET
+   ========================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    color: #0f172a;
+    background: #ffffff;
+}
+
+:root {
+    /* Hospital-friendly blue palette */
+    --brand-900: #0b2545;
+    --brand-700: #1e3a8a;
+    --brand-600: #2563eb;
+    --brand-500: #3b82f6;
+    --brand-400: #60a5fa;
+    --muted: #64748b;
+    --card-bg: rgba(255,255,255,0.6);
+    --glass-border: rgba(255,255,255,0.8);
+    /* System gradient colors (requested) */
+    --sys-c1: #002617; /* interpreted from #02617 */
+    --sys-c2: #1D4ED8;
+    --sys-c3: #06B6D4;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    color: #0f172a;
+    background: linear-gradient(135deg, var(--sys-c1) 0%, var(--sys-c2) 50%, var(--sys-c3) 100%);
+    background-attachment: fixed;
+}
+
+.site-header {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+    padding: 25px 7%;
+
+    display: flex;
+    align-items: center;
+
+    background: transparent;
+}
+
+.site-logo {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+}
+
+.secondary-header {
+    width: 100%;
+
+    padding: 22px 7%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #e5edf7;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    position: relative;
+    z-index: 5;
+}
+
+.secondary-logo {
+    width: 135px;
+    height: auto;
+    object-fit: contain;
+}
+
+.site-footer {
+    padding: 22px 6%;
+
+    text-align: center;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+    border-top: 1px solid #e5edf7;
+}
+
+
+/* ==========================================================
+   BUTTONS
+   ========================================================== */
+
+.primary-button,
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 48px;
+
+    padding: 13px 22px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+.primary-button {
+    border: none;
+
+    background: var(--brand-600);
+    color: #ffffff;
+
+    box-shadow:
+        0 12px 28px rgba(37, 99, 235, 0.18);
+}
+
+.primary-button:hover {
+    background: var(--brand-700);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 16px 34px rgba(37, 99, 235, 0.22);
+}
+
+.secondary-button {
+    border: 1px solid rgba(59,130,246,0.12);
+
+    background: #ffffff;
+    color: var(--brand-900);
+}
+
+.secondary-button:hover {
+    color: var(--brand-600);
+    border-color: var(--brand-400);
+}
+
+.primary-button span {
+    font-size: 18px;
+}
+
+.patient-card-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 44px;
+
+    padding: 10px 18px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    border: none;
+}
+
+.patient-card-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.text-button {
+    border: none;
+    background: transparent;
+
+    color: #2563eb;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.text-button:hover {
+    color: #1d4ed8;
+}
+
+/* ==========================================================
+   PAGE 1 — HOME
+   ========================================================== */
+
+.home-page {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f8fbff 56%,
+            #eef6ff 100%
+        );
+}
+
+.bg-circle {
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.bg-circle-one {
+    width: 430px;
+    height: 430px;
+
+    top: -170px;
+    right: -130px;
+
+    background: rgba(37, 99, 235, 0.08);
+}
+
+.bg-circle-two {
+    width: 320px;
+    height: 320px;
+
+    bottom: -170px;
+    left: -110px;
+
+    background: rgba(14, 165, 233, 0.07);
+}
+
+.home-hero {
+    position: relative;
+    z-index: 2;
+
+    flex: 1;
+
+    width: 100%;
+    max-width: 1120px;
+
+    margin: 0 auto;
+
+    padding:
+        45px 7%
+        35px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+.home-hero h1 {
+    margin-top: 28px;
+
+    color: #0f172a;
+
+    font-size: clamp(44px, 6vw, 72px);
+
+    line-height: 1.04;
+
+    letter-spacing: -3px;
+
+    font-weight: 800;
+}
+
+.home-hero h1 span {
+    color: #2563eb;
+}
+
+.home-description {
+    max-width: 750px;
+
+    margin-top: 25px;
+
+    color: #64748b;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+.home-features {
+    width: 100%;
+    max-width: 900px;
+
+    margin-top: 38px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+}
+
+.feature-card {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 18px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, 0.88);
+
+    text-align: left;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.04);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 16px 35px rgba(37, 99, 235, 0.08);
+}
+
+.feature-icon {
+    width: 45px;
+    height: 45px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+    font-size: 20px;
+}
+
+.feature-card h3 {
+    color: #1e293b;
+
+    font-size: 14px;
+}
+
+.feature-card p {
+    margin-top: 4px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    line-height: 1.45;
+}
+
+.continue-button {
+    margin-top: 42px;
+
+    min-width: 190px;
+}
+
+
+/* ==========================================================
+   PAGE 2 — ABOUT
+   ========================================================== */
+
+.secondary-page {
+    background: #ffffff;
+}
+
+.intro-section {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding:
+        70px 7%;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 65px;
+
+    align-items: center;
+}
+
+.intro-content h1,
+.appointment-content h1 {
+    margin-top: 24px;
+
+    color: #0f172a;
+
+    font-size: clamp(43px, 5vw, 66px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2.5px;
+
+    font-weight: 800;
+}
+
+.intro-content h1 span,
+.appointment-content h1 span {
+    color: #2563eb;
+}
+
+.intro-content > p,
+.appointment-content > p {
+    max-width: 590px;
+
+    margin-top: 23px;
+
+    color: #64748b;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+.button-group,
+.appointment-buttons {
+    margin-top: 34px;
+
+    display: flex;
+
+    gap: 13px;
+}
+
+.intro-image-container,
+.appointment-image-container {
+    padding: 11px;
+
+    border-radius: 28px;
+
+    background: #eff6ff;
+
+    box-shadow:
+        0 25px 60px rgba(37, 99, 235, 0.12);
+}
+
+.intro-image,
+.appointment-image {
+    width: 100%;
+
+    height: 500px;
+
+    display: block;
+
+    object-fit: cover;
+
+    border-radius: 20px;
+}
+
+.benefits-section,
+.steps-section {
+    padding:
+        85px 7%;
+
+    background: #f8fbff;
+}
+
+.section-heading {
+    max-width: 720px;
+
+    margin: 0 auto 50px;
+
+    text-align: center;
+}
+
+.section-heading > span,
+.cta-section span,
+.final-cta span {
+    color: #2563eb;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+.section-heading h2 {
+    margin-top: 14px;
+
+    color: #0f172a;
+
+    font-size: clamp(31px, 4vw, 48px);
+
+    line-height: 1.16;
+
+    letter-spacing: -1px;
+}
+
+.section-heading p {
+    margin-top: 17px;
+
+    color: #64748b;
+
+    line-height: 1.7;
+}
+
+.benefits-grid {
+    max-width: 1150px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.benefit-card {
+    position: relative;
+
+    padding: 28px;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 18px 40px rgba(15, 23, 42, 0.07);
+}
+
+.benefit-number {
+    position: absolute;
+
+    top: 19px;
+    right: 21px;
+
+    color: #dbeafe;
+
+    font-size: 28px;
+
+    font-weight: 800;
+}
+
+.benefit-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #eff6ff;
+
+    font-size: 21px;
+}
+
+.benefit-card h3 {
+    margin-top: 20px;
+
+    color: #1e293b;
+
+    font-size: 18px;
+}
+
+.benefit-card p {
+    margin-top: 10px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.cta-section {
+    max-width: 1150px;
+
+    margin: 65px auto;
+
+    padding: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #dbeafe
+        );
+}
+
+.cta-section h2 {
+    margin-top: 10px;
+
+    color: #0f172a;
+
+    font-size: 31px;
+}
+
+.cta-section p {
+    margin-top: 10px;
+
+    color: #64748b;
+}
+
+
+/* ==========================================================
+   PAGE 3 — APPOINTMENTS
+   ========================================================== */
+
+.appointment-page {
+    background: #ffffff;
+}
+
+.appointment-hero {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding:
+        70px 7%
+        75px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 65px;
+
+    align-items: center;
+}
+
+.steps-grid {
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.step-card {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding: 27px;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+}
+
+.step-number {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+.step-card h3 {
+    color: #1e293b;
+
+    font-size: 18px;
+}
+
+.step-card p {
+    margin-top: 9px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+.appointment-features {
+    max-width: 1100px;
+
+    margin: 65px auto;
+
+    padding:
+        0 7%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.appointment-feature {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 18px;
+
+    padding: 28px;
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 18px;
+
+    background: #f8fbff;
+}
+
+.feature-large-icon {
+    width: 53px;
+    height: 53px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-size: 22px;
+}
+
+.appointment-feature h3 {
+    color: #1e293b;
+
+    font-size: 17px;
+}
+
+.appointment-feature p {
+    margin-top: 8px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+.final-cta {
+    max-width: 1150px;
+
+    margin: 70px auto;
+
+    padding: 45px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1d4ed8,
+            #2563eb
+        );
+
+    color: #ffffff;
+}
+
+.final-cta h2 {
+    margin-top: 12px;
+
+    font-size: 34px;
+
+    line-height: 1.15;
+}
+
+.final-cta p {
+    max-width: 650px;
+
+    margin-top: 15px;
+
+    color: #dbeafe;
+
+    line-height: 1.7;
+}
+
+.large-button {
+    min-width: 210px;
+
+    background: #ffffff;
+
+    color: #2563eb;
+}
+
+.large-button:hover {
+    background: #f8fafc;
+}
+
+
+/* ==========================================================
+   LOGIN PAGE — GLASSMORPHISM
+   ========================================================== */
+
+.login-page {
+    position: relative;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    padding:
+        40px 6%;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(37, 99, 235, 0.18),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(14, 165, 233, 0.14),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #eff6ff 0%,
+            #f8fbff 48%,
+            #eaf4ff 100%
+        );
+}
+
+.login-back-button {
+    position: absolute;
+
+    top: 28px;
+    left: 6%;
+
+    z-index: 10;
+
+    padding: 10px 15px;
+
+    border: 1px solid rgba(37, 99, 235, 0.15);
+
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.5);
+
+    color: #2563eb;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.login-back-button:hover {
+    background: rgba(255, 255, 255, 0.85);
+
+    transform: translateX(-2px);
+}
+
+.login-glow {
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    filter: blur(5px);
+}
+
+.login-glow-one {
+    width: 420px;
+    height: 420px;
+
+    top: -170px;
+    left: -120px;
+
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.login-glow-two {
+    width: 360px;
+    height: 360px;
+
+    bottom: -170px;
+    right: -100px;
+
+    background: rgba(14, 165, 233, 0.09);
+}
+
+.login-container {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+    max-width: 1080px;
+
+    min-height: 640px;
+
+    display: grid;
+
+    grid-template-columns:
+        0.95fr 1.05fr;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.75);
+
+    border-radius: 30px;
+
+    background:
+        rgba(255, 255, 255, 0.58);
+
+    backdrop-filter: blur(22px);
+
+    -webkit-backdrop-filter: blur(22px);
+
+    box-shadow:
+        0 30px 80px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.login-info {
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: 45px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(37, 99, 235, 0.94),
+            rgba(29, 78, 216, 0.88)
+        );
+
+    color: #ffffff;
+}
+
+.login-info::after {
+    content: "";
+
+    position: absolute;
+
+    width: 320px;
+    height: 320px;
+
+    right: -150px;
+    bottom: -130px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.login-brand {
+    position: relative;
+
+    z-index: 2;
+}
+
+.login-brand .login-logo {
+    width: 155px;
+
+    padding: 7px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.94);
+}
+
+.login-info-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 450px;
+}
+
+.login-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 13px;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    color: #dbeafe;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.login-info-content h1 {
+    margin-top: 24px;
+
+    font-size: clamp(43px, 5vw, 65px);
+
+    line-height: 1.01;
+
+    letter-spacing: -2.5px;
+
+    font-weight: 800;
+}
+
+.login-info-content h1 span {
+    color: #bfdbfe;
+}
+
+.login-info-content > p {
+    margin-top: 21px;
+
+    color: #dbeafe;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+.login-trust-list {
+    margin-top: 28px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+.login-trust-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #eff6ff;
+
+    font-size: 13px;
+}
+
+.trust-icon {
+    width: 23px;
+    height: 23px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.14);
+
+    color: #ffffff;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+.login-info-footer {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #bfdbfe;
+
+    font-size: 11px;
+}
+
+.login-form-panel {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding: 50px 58px;
+
+    background:
+        rgba(255, 255, 255, 0.72);
+
+    backdrop-filter: blur(20px);
+
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.login-form-header {
+    text-align: left;
+}
+
+.mobile-login-logo {
+    display: none;
+}
+
+.login-form-header h2 {
+    color: #0f172a;
+
+    font-size: 33px;
+
+    letter-spacing: -1px;
+
+    font-weight: 800;
+}
+
+.login-form-header p {
+    margin-top: 8px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+.login-form {
+    margin-top: 30px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.form-group label {
+    color: #334155;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.form-label-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.forgot-password {
+    border: none;
+
+    background: none;
+
+    color: #2563eb;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.form-input {
+    width: 100%;
+
+    height: 49px;
+
+    padding: 0 15px;
+
+    border: 1px solid #dbe4ee;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background: rgba(255, 255, 255, 0.82);
+
+    color: #0f172a;
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.form-input::placeholder {
+    color: #a0aec0;
+}
+
+.form-input:focus {
+    border-color: #60a5fa;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+.remember-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: -3px;
+}
+
+.remember-label {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+.remember-label input {
+    width: 14px;
+    height: 14px;
+
+    accent-color: #2563eb;
+}
+
+.secure-text {
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+.login-submit-button {
+    width: 100%;
+
+    height: 51px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    box-shadow:
+        0 12px 26px rgba(37, 99, 235, 0.22);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.login-submit-button span {
+    margin-left: 10px;
+
+    font-size: 18px;
+}
+
+.login-submit-button:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 16px 32px rgba(37, 99, 235, 0.28);
+}
+
+.login-divider {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 25px;
+}
+
+.login-divider span {
+    flex: 1;
+
+    height: 1px;
+
+    background: #e2e8f0;
+}
+
+.login-divider p {
+    color: #94a3b8;
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+.register-section {
+    margin-top: 21px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+.register-button {
+    border: none;
+
+    background: none;
+
+    color: #2563eb;
+
+    font-size: 12px;
+
+    font-weight: 750;
+}
+
+.register-button:hover {
+    text-decoration: underline;
+}
+
+.login-security-note {
+    margin-top: 24px;
+
+    text-align: center;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+}
+
+.login-footer {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 18px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    text-align: center;
+}
+
+/* ==========================================================
+   PROFESSIONAL PASSWORD SHOW / HIDE BUTTON
+   ========================================================== */
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-wrapper .password-input {
+    padding-right: 75px;
+}
+
+.password-show-button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border: none;
+    background: transparent;
+
+    color: #2563eb;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    padding: 6px 8px;
+
+    border-radius: 6px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.password-show-button:hover {
+    background: rgba(37, 99, 235, 0.08);
+    color: #1d4ed8;
+}
+
+.password-show-button:focus {
+    outline: 2px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 2px;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    .home-features {
+        grid-template-columns: 1fr;
+        max-width: 550px;
+    }
+
+    .intro-section,
+    .appointment-hero {
+        grid-template-columns: 1fr;
+
+        gap: 40px;
+    }
+
+    .intro-content,
+    .appointment-content {
+        text-align: center;
+    }
+
+    .intro-content > p,
+    .appointment-content > p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .button-group,
+    .appointment-buttons {
+        justify-content: center;
+    }
+
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .appointment-features {
+        grid-template-columns: 1fr;
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-section,
+    .final-cta {
+        margin-left: 6%;
+        margin-right: 6%;
+    }
+
+    .login-container {
+        max-width: 650px;
+
+        grid-template-columns: 1fr;
+    }
+
+    .login-info {
+        display: none;
+    }
+
+    .login-form-panel {
+        padding: 42px 38px;
+    }
+
+    .mobile-login-logo {
+        display: block;
+
+        margin-bottom: 26px;
+    }
+
+    .mobile-login-logo img {
+        width: 135px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .site-header,
+    .secondary-header {
+        padding: 20px 6%;
+    }
+
+    .site-logo {
+        width: 125px;
+    }
+
+    .secondary-logo {
+        width: 120px;
+    }
+
+    .home-hero {
+        padding:
+            32px 6%
+            30px;
+    }
+
+    .home-hero h1,
+    .intro-content h1,
+    .appointment-content h1 {
+        font-size: 42px;
+
+        letter-spacing: -1.7px;
+    }
+
+    .home-description,
+    .intro-content > p,
+    .appointment-content > p {
+        font-size: 15px;
+    }
+
+    .intro-section,
+    .appointment-hero {
+        padding:
+            50px 6%;
+    }
+
+    .intro-image,
+    .appointment-image {
+        height: 340px;
+    }
+
+    .benefits-section,
+    .steps-section {
+        padding:
+            60px 6%;
+    }
+
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .button-group,
+    .appointment-buttons {
+        flex-direction: column;
+    }
+
+    .button-group button,
+    .appointment-buttons button {
+        width: 100%;
+    }
+
+    .cta-section,
+    .final-cta {
+        flex-direction: column;
+
+        margin-left: 6%;
+        margin-right: 6%;
+
+        padding: 30px 23px;
+
+        text-align: center;
+    }
+
+    .cta-section h2,
+    .final-cta h2 {
+        font-size: 26px;
+    }
+
+    .cta-section button,
+    .final-cta button {
+        width: 100%;
+    }
+
+    .appointment-features {
+        padding:
+            0 6%;
+    }
+
+    .login-page {
+        padding:
+            70px 5%
+            25px;
+    }
+
+    .login-back-button {
+        top: 18px;
+        left: 5%;
+    }
+
+    .login-container {
+        min-height: auto;
+
+        border-radius: 22px;
+    }
+
+    .login-form-panel {
+        padding: 32px 24px;
+    }
+
+    .login-form-header h2 {
+        font-size: 29px;
+    }
+
+    .remember-row {
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+    .login-footer {
+        max-width: 300px;
+
+        line-height: 1.5;
+    }
+}
+/* ==========================================================
+   PATIENT DASHBOARD
+   ========================================================== */
+
+.patient-dashboard {
+    min-height: 100vh;
+    display: flex;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(64, 160, 255, 0.18),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #eef7ff,
+            #f7fbff
+        );
+}
+
+.patient-nav-image {
+    width: 26px;
+    height: 26px;
+    object-fit: cover;
+    border-radius: 7px;
+    display: block;
+}
+
+.patient-card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 14px;
+    display: block;
+}
+
+.patient-avatar-image {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.patient-empty-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+/* ==========================================================
+   SIDEBAR
+   ========================================================== */
+
+.patient-sidebar {
+    width: 285px;
+    min-height: 100vh;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    background: linear-gradient(180deg, rgba(239, 248, 255, 0.95) 0%, rgba(232, 244, 255, 0.96) 100%);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border-right: 1px solid rgba(147, 197, 253, 0.55);
+    box-shadow: 10px 0 35px rgba(40, 100, 160, 0.08);
+}
+
+/* decorative gradient removed per user request */
+
+
+/* ==========================================================
+   BRAND
+   ========================================================== */
+
+.patient-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 5px 30px;
+}
+
+.patient-logo {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    object-fit: contain;
+    border-radius: 18px;
+    background: white;
+    padding: 4px;
+    box-shadow: 0 8px 25px rgba(30, 100, 170, 0.15);
+}
+
+.patient-brand-text h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #12395a;
+}
+
+.patient-brand-text p {
+    margin: 5px 0 0;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #62809a;
+}
+/* =========================================================
+   PATIENT REAL IMAGE ICONS
+========================================================= */
+
+/* ---------------------------------------------------------
+   SIDEBAR NAVIGATION ICONS
+--------------------------------------------------------- */
+
+.patient-nav-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+}
+
+/* ---------------------------------------------------------
+   LOGOUT ICON
+--------------------------------------------------------- */
+
+.patient-logout-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+}
+
+/* ---------------------------------------------------------
+   DASHBOARD CARD ICONS
+--------------------------------------------------------- */
+
+.patient-card-icon {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #f1f8ff;
+    box-shadow: 0 6px 18px rgba(37,99,235,0.06);
+    margin-bottom: 18px;
+}
+
+/* ---------------------------------------------------------
+   QUEUE AI ICON
+--------------------------------------------------------- */
+
+.queue-ai-icon {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+}
+
+/* ---------------------------------------------------------
+   EMPTY APPOINTMENT ICON
+--------------------------------------------------------- */
+
+.patient-empty-icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 18px;
+}
+
+/* ---------------------------------------------------------
+   IMAGE ALIGNMENT INSIDE NAVIGATION
+--------------------------------------------------------- */
+
+.patient-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: transparent;
+    color: #12395a;
+    font-weight: 700;
+    transition: background 0.18s ease, transform 0.12s ease, color 0.18s ease;
+}
+
+.patient-nav-item img {
+    width: 28px;
+    height: 28px;
+}
+
+.patient-nav-item:hover {
+    background: rgba(220, 20, 60, 0.72);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(220, 20, 60, 0.12);
+}
+
+.patient-nav-item.active {
+    background: rgba(220, 20, 60, 0.72);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(220, 20, 60, 0.12);
+}
+
+.patient-nav-item {
+    border: none;
+    outline: none;
+}
+
+.patient-nav-item:active {
+    transform: translateX(6px) scale(0.995);
+    background: rgba(220, 20, 60, 0.72);
+    color: #ffffff;
+}
+
+.patient-nav-item:focus {
+    box-shadow: 0 6px 18px rgba(220, 20, 60, 0.12);
+}
+
+/* ---------------------------------------------------------
+   IMAGE ALIGNMENT INSIDE LOGOUT BUTTON
+--------------------------------------------------------- */
+
+.patient-logout-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+/* ==========================================================
+   SIDEBAR BOTTOM
+   ========================================================== */
+
+.patient-sidebar-bottom {
+    margin-top: auto;
+}
+
+.patient-logout-button {
+    width: 100%;
+    border: none;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: #b44b58;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+/* ==========================================================
+   MAIN
+   ========================================================== */
+
+.patient-main {
+    flex: 1;
+    padding: 42px 50px;
+    min-width: 0;
+}
+
+/* Hero / top gradient for dashboard */
+.patient-hero {
+    padding: 36px 50px 48px;
+    background: linear-gradient(90deg, #f5fbff 0%, #eef7ff 40%, #eef6ff 100%);
+    border-radius: 16px;
+    margin-bottom: 28px;
+}
+
+.patient-hero-inner {
+    max-width: 1100px;
+    margin: 0 auto 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px;
+    border-radius: 12px;
+    /* glass effect: translucent backdrop with blur, subtle border and shadow */
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 12px 30px rgba(4,30,66,0.08);
+    transform: translateX(36px); /* shift slightly to the right */
+    color: #0b3a66;
+}
+
+@media (max-width: 900px) {
+    .patient-hero-inner {
+        transform: translateX(0);
+        padding: 18px;
+        margin: 0 14px 18px;
+    }
+}
+
+.patient-hero-text {
+    max-width: 780px;
+}
+
+.patient-hero-text h1 {
+    font-size: 34px;
+    color: #0b3a66;
+    margin-top: 6px;
+}
+
+.patient-hero-action {
+    display: flex;
+    align-items: center;
+}
+
+.patient-cards-row {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 18px;
+}
+
+.patient-glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(219, 233, 247, 0.9);
+    box-shadow: 0 18px 40px rgba(14, 70, 120, 0.06);
+    border-radius: 18px;
+    padding: 0; /* remove inner padding so media can touch top */
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+}
+
+.patient-glass-card h2 {
+    color: #12395a;
+    margin-bottom: 6px;
+}
+
+.patient-glass-card p {
+    color: #6b879a;
+    font-size: 14px;
+}
+
+.patient-overview-section {
+    max-width: 1120px;
+    margin: 36px auto 0;
+    padding: 0 10px;
+}
+
+.patient-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.patient-overview-card {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid rgba(229,241,255,0.8);
+    box-shadow: 0 10px 30px rgba(37,99,235,0.06);
+}
+
+
+/* ==========================================================
+   TOP BAR
+   ========================================================== */
+
+.patient-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 25px;
+    margin-bottom: 42px;
+    position: relative;
+}
+
+/* Decorative gradient behind the topbar container (keeps content colors unchanged) */
+/* topbar decorative background reverted: no pseudo-element applied */
+
+.patient-page-label {
+    margin: 0 0 8px;
+    color: #2781bd;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.patient-topbar h1 {
+    margin: 0;
+    color: #153b5a;
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.patient-subtitle {
+    max-width: 700px;
+    margin: 10px 0 0;
+    color: #6d8497;
+    line-height: 1.6;
+}
+
+
+/* ==========================================================
+   PROFILE BUTTON
+   ========================================================== */
+
+.patient-profile-button {
+    border: 1px solid rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(14px);
+    border-radius: 15px;
+    padding: 9px 15px 9px 9px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #315d7b;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.patient-avatar {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #247bb7;
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+/* ==========================================================
+   GLASS CARD
+   ========================================================== */
+
+.patient-glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        0 20px 50px rgba(14, 165, 233, 0.06),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+    border-radius: 24px;
+}
+
+/* Patient dashboard specific tweaks */
+.patient-topbar h1 {
+    font-size: 28px;
+    color: #0f172a;
+    margin-top: 6px;
+}
+
+.patient-profile-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(59,130,246,0.08), rgba(37,99,235,0.04));
+    border: 1px solid rgba(59,130,246,0.08);
+}
+
+.patient-avatar {
+    color: #fff;
+    background: linear-gradient(135deg, var(--brand-600), var(--brand-500));
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.patient-profile-label {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.patient-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+    align-items: stretch;
+}
+
+.patient-dashboard-card {
+    padding: 30px;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.patient-card-media {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    border-radius: 18px 18px 0 0;
+    flex: 0 0 auto;
+}
+
+.patient-media-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.patient-card-body {
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    flex: 1 1 auto;
+}
+
+.patient-card-footer {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.patient-card-button {
+    min-width: 160px;
+    align-self: flex-start;
+}
+
+.patient-card-icon {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #f1f8ff;
+    box-shadow: 0 6px 18px rgba(37,99,235,0.06);
+}
+
+.patient-content-icon {
+    width: 28px;
+    height: 28px;
+}
+
+/* ==========================================================
+   OVERVIEW
+   ========================================================== */
+
+.patient-overview-section {
+    margin-top: 45px;
+}
+
+.patient-section-title p {
+    color: #2781bd;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+}
+
+.patient-section-title h2 {
+    color: #183e5b;
+    font-size: 25px;
+}
+
+.patient-overview-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+    gap: 20px;
+}
+
+.patient-overview-card {
+    padding: 24px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 20px;
+}
+
+.patient-overview-card span {
+    display: block;
+    color: #70889b;
+    font-size: 13px;
+}
+
+.patient-overview-card strong {
+    display: block;
+    margin-top: 10px;
+    font-size: 28px;
+    color: #1769a5;
+}
+
+
+/* ==========================================================
+   SECONDARY BUTTON
+   ========================================================== */
+
+.secondary-button {
+    border: 1px solid rgba(42, 119, 174, 0.25);
+    background: rgba(255,255,255,0.6);
+    color: #216c9f;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+/* ==========================================================
+   PAGE SECTIONS
+   ========================================================== */
+
+.patient-page-section,
+.patient-queue-section,
+.patient-profile-section {
+    width: 100%;
+}
+
+
+/* ==========================================================
+   APPOINTMENTS
+   ========================================================== */
+
+.patient-appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.appointment-card {
+    padding: 28px;
+}
+
+.appointment-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.appointment-label {
+    color: #2781bd;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.appointment-card h2 {
+    margin: 7px 0 5px;
+    color: #173d5a;
+}
+
+.appointment-card-header p {
+    margin: 0;
+    color: #70889b;
+}
+
+.appointment-status {
+    align-self: flex-start;
+    padding: 8px 14px;
+    border-radius: 30px;
+    background: rgba(55, 180, 120, 0.12);
+    color: #25865d;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.appointment-information {
+    display: grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(90,130,160,0.12);
+}
+
+.appointment-information span,
+.queue-details span {
+    display: block;
+    color: #7c93a3;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+
+.appointment-information strong,
+.queue-details strong {
+    display: block;
+    margin-top: 6px;
+    color: #274f6c;
+}
+
+.appointment-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+}
+
+
+/* ==========================================================
+   DANGER BUTTON
+   ========================================================== */
+
+.danger-button {
+    border: 1px solid rgba(190, 65, 80, 0.2);
+    background: rgba(255, 235, 238, 0.65);
+    color: #b44352;
+    border-radius: 11px;
+    padding: 11px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+   ========================================================== */
+
+.patient-empty-state {
+    padding: 80px 20px;
+    text-align: center;
+    background: rgba(255,255,255,0.5);
+    border-radius: 25px;
+}
+
+.patient-empty-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.patient-empty-state h2 {
+    color: #173d5a;
+}
+
+.patient-empty-state p {
+    color: #71889a;
+}
+
+
+/* ==========================================================
+   QUEUE
+   ========================================================== */
+
+.patient-queue-section {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.queue-ticket {
+    padding: 35px;
+}
+
+.queue-ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.queue-ticket-header span,
+.queue-ai-card > div > span {
+    color: #2781bd;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.queue-ticket-header h2 {
+    margin: 8px 0;
+    font-size: 45px;
+    color: #173d5a;
+}
+
+.queue-status {
+    background: rgba(39, 150, 100, 0.12);
+    color: #26845d;
+    padding: 9px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.queue-position {
+    text-align: center;
+    padding: 35px;
+    margin: 20px 0;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.4);
+}
+
+.queue-position span,
+.queue-wait span {
+    display: block;
+    color: #7890a1;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.queue-position strong {
+    display: block;
+    font-size: 52px;
+    color: #1871ae;
+    margin: 10px;
+}
+
+.queue-position p {
+    margin: 0;
+    color: #71889a;
+}
+
+.queue-wait {
+    text-align: center;
+    padding: 20px;
+}
+
+.queue-wait strong {
+    display: block;
+    margin-top: 8px;
+    color: #1b567e;
+    font-size: 25px;
+}
+
+.queue-details {
+    display: grid;
+    grid-template-columns:
+        repeat(4, 1fr);
+    gap: 20px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(90,130,160,0.12);
+}
+
+.queue-ai-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+}
+
+.queue-ai-icon {
+    width: 55px;
+    height: 55px;
+    display: grid;
+    place-items: center;
+    border-radius: 17px;
+    background: rgba(255,255,255,0.75);
+    font-size: 24px;
+}
+
+.queue-ai-card h2 {
+    margin: 7px 0;
+    color: #214a67;
+    font-size: 18px;
+}
+
+.queue-ai-card p {
+    margin: 0;
+    color: #71889a;
+}
+
+
+/* ==========================================================
+   PROFILE
+   ========================================================== */
+
+.patient-profile-card {
+    padding: 35px;
+}
+
+.profile-section-heading {
+    margin-bottom: 22px;
+}
+
+.profile-section-heading span {
+    color: #2781bd;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+}
+
+.profile-section-heading h2 {
+    margin: 6px 0 0;
+    color: #193f5b;
+}
+
+.profile-spacing {
+    margin-top: 40px;
+}
+
+.profile-form-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, 1fr);
+    gap: 20px;
+}
+
+.profile-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-form-group.full-width {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.profile-form-group label {
+    color: #48677d;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.profile-form-group input,
+.profile-form-group select,
+.profile-form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(80,125,155,0.18);
+    background: rgba(255,255,255,0.58);
+    border-radius: 12px;
+    padding: 13px 14px;
+    color: #274f6b;
+    font-family: inherit;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.profile-form-group textarea {
+    resize: vertical;
+}
+
+.profile-form-group input:focus,
+.profile-form-group select:focus,
+.profile-form-group textarea:focus {
+    border-color: rgba(32,125,190,0.5);
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 0 4px rgba(32,125,190,0.08);
+}
+
+.profile-form-group input:disabled,
+.profile-form-group select:disabled,
+.profile-form-group textarea:disabled {
+    opacity: 0.78;
+    cursor: not-allowed;
+}
+
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(90,130,160,0.12);
+}
+
+.profile-actions .primary-button {
+    border: none;
+    background: linear-gradient(
+        135deg,
+        #1878b8,
+        #2b9bd3
+    );
+    color: white;
+    border-radius: 12px;
+    padding: 13px 22px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 1100px) {
+
+    .patient-sidebar {
+        width: 240px;
+    }
+
+    .patient-main {
+        padding: 35px 30px;
+    }
+
+    .patient-dashboard-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .queue-details {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .patient-dashboard {
+        display: block;
+    }
+
+    .patient-sidebar {
+        width: auto;
+        min-height: auto;
+        position: relative;
+    }
+
+    .patient-navigation {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .patient-nav-item {
+        white-space: nowrap;
+    }
+
+    .patient-sidebar-bottom {
+        margin-top: 20px;
+    }
+
+    .patient-main {
+        padding: 25px 18px;
+    }
+
+    .patient-topbar {
+        flex-direction: column;
+    }
+
+    .patient-dashboard-grid,
+    .patient-overview-grid,
+    .profile-form-grid,
+    .appointment-information,
+    .queue-details {
+        grid-template-columns: 1fr;
+    }
+
+}
+

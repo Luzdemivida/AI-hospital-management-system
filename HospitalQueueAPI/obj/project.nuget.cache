@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qhpNe1kjJcY=",
+  "dgSpecHash": "f0PKgB+Yz1g=",
   "success": true,
-  "projectFilePath": "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System\\HospitalQueueAPI\\HospitalQueueAPI.csproj",
+  "projectFilePath": "C:\\Users\\KRLOSCOMPUTER\\Desktop\\AI-Hospital-Queue-System(backup)\\HospitalQueueAPI\\HospitalQueueAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KRLOSCOMPUTER\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\KRLOSCOMPUTER\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",

@@ -9,4 +9,6 @@ public class DoctorListDto
     public string Department { get; set; } = string.Empty;
 
     public string Specialization { get; set; } = string.Empty;
+
+    public string Biography { get; set; } = string.Empty;
 }

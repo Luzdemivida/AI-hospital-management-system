@@ -9,19 +9,38 @@ namespace HospitalQueueAPI.Services;
 
 public class QueueService : IQueueService
 {
+    private const string ServingMessage = "You are currently being attended to. Please proceed to the consultation area.";
+
+    private static string BuildStatusMessage(string? status, int estimatedWaitTime)
+    {
+        if (status == "Serving")
+            return ServingMessage;
+
+        if (status == "Completed")
+            return "Your consultation has been completed.";
+
+        if (estimatedWaitTime > 0)
+            return $"Estimated waiting time: {estimatedWaitTime} minutes. Please remain available.";
+
+        return "Your appointment is scheduled.";
+    }
+
     //==========================================================
     // Constructor
     //==========================================================
 
     private readonly ApplicationDbContext _context;
     private readonly IOllamaService _ollamaService;
+    private readonly NotificationService _notificationService;
 
     public QueueService(
         ApplicationDbContext context,
-        IOllamaService ollamaService)
+        IOllamaService ollamaService,
+        NotificationService notificationService)
     {
         _context = context;
         _ollamaService = ollamaService;
+        _notificationService = notificationService;
     }
 
 //==========================================================
@@ -97,6 +116,7 @@ public async Task<QueueResponseDto> GenerateQueueEntryAsync(int appointmentId)
         Status = queueEntry.Status ?? "Waiting",
         CurrentPosition = queueEntry.CurrentPosition ?? 0,
         EstimatedWaitTime = queueEntry.EstimatedWaitTime ?? 0,
+        StatusMessage = BuildStatusMessage(queueEntry.Status, queueEntry.EstimatedWaitTime ?? 0),
         ConsultationDuration = queueEntry.ConsultationDuration,
         AiPrediction = "Prediction pending"
     };
@@ -121,26 +141,50 @@ public async Task<QueueResponseDto> GenerateQueueEntryAsync(int appointmentId)
     if (nextPatient == null)
         return null;
 
+    var consultationMinutes = nextPatient.Appointment.Doctor?.AverageConsultationTime ?? 15;
+    var appointmentDate = nextPatient.Appointment.AppointmentDate;
+    var doctorId = nextPatient.Appointment.DoctorId;
+
     // Mark current patient as serving
     nextPatient.Status = "Serving";
     nextPatient.ServiceStart = DateTime.UtcNow;
+    nextPatient.CurrentPosition = 0;
+    nextPatient.EstimatedWaitTime = 0;
 
-    // Update everyone else's position
+    await _notificationService.CreateNotificationAsync(
+        nextPatient.Appointment.PatientId,
+        "Consultation update",
+        ServingMessage,
+        "Queue");
+
     var waitingPatients = await _context.QueueEntries
+        .Include(q => q.Appointment)
         .Where(q =>
+            q.Appointment.DoctorId == doctorId &&
+            q.Appointment.AppointmentDate == appointmentDate &&
             q.Status == "Waiting" &&
-            q.QueueNumber > nextPatient.QueueNumber)
+            q.Id != nextPatient.Id)
+        .OrderBy(q => q.QueueNumber)
         .ToListAsync();
 
-    foreach (var patient in waitingPatients)
+    for (int i = 0; i < waitingPatients.Count; i++)
     {
-        if (patient.CurrentPosition.HasValue)
-            patient.CurrentPosition--;
+        var patient = waitingPatients[i];
+        patient.CurrentPosition = i + 1;
+        patient.EstimatedWaitTime = (i + 1) * consultationMinutes;
+
+        try
+        {
+            await _ollamaService.GeneratePredictionAsync(patient.Id);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ollama Error: {ex.Message}");
+        }
     }
 
     await _context.SaveChangesAsync();
 
-    // Generate fresh AI prediction
     try
     {
         await _ollamaService.GeneratePredictionAsync(nextPatient.Id);
@@ -150,35 +194,30 @@ public async Task<QueueResponseDto> GenerateQueueEntryAsync(int appointmentId)
         Console.WriteLine($"Ollama Error: {ex.Message}");
     }
 
+    var patientName =
+        $"{nextPatient.Appointment?.Patient?.User?.FirstName ?? ""} {nextPatient.Appointment?.Patient?.User?.LastName ?? ""}".Trim();
+    var departmentName = nextPatient.Appointment?.Doctor?.Department?.DepartmentName ?? "";
+    var aiPrediction = nextPatient.AiPredictions
+        .OrderByDescending(a => a.GeneratedAt)
+        .Select(a => a.Explanation)
+        .FirstOrDefault();
+
     return new QueueResponseDto
     {
         QueueId = nextPatient.Id,
         AppointmentId = nextPatient.AppointmentId,
         QueueNumber = nextPatient.QueueNumber,
-        PatientName =
-            nextPatient.Appointment.Patient.User.FirstName + " " +
-            nextPatient.Appointment.Patient.User.LastName,
-        Department =
-            nextPatient.Appointment.Doctor.Department.DepartmentName ?? "",
-        AppointmentDate =
-            nextPatient.Appointment.AppointmentDate,
-        AppointmentTime =
-            nextPatient.Appointment.AppointmentTime,
-        Reason =
-            nextPatient.Appointment.Reason ?? "",
-        Status =
-            nextPatient.Status ?? "Serving",
-        CurrentPosition =
-            nextPatient.CurrentPosition ?? 0,
-        EstimatedWaitTime =
-            nextPatient.EstimatedWaitTime ?? 0,
-        ConsultationDuration =
-            nextPatient.ConsultationDuration,
-        AiPrediction =
-            nextPatient.AiPredictions
-                .OrderByDescending(a => a.GeneratedAt)
-                .Select(a => a.Explanation)
-                .FirstOrDefault()
+        PatientName = patientName,
+        Department = departmentName,
+        AppointmentDate = nextPatient.Appointment?.AppointmentDate ?? DateOnly.FromDateTime(DateTime.Today),
+        AppointmentTime = nextPatient.Appointment?.AppointmentTime ?? TimeOnly.MinValue,
+        Reason = nextPatient.Appointment?.Reason ?? "",
+        Status = nextPatient.Status ?? "Serving",
+        CurrentPosition = nextPatient.CurrentPosition ?? 0,
+        EstimatedWaitTime = nextPatient.EstimatedWaitTime ?? 0,
+        StatusMessage = BuildStatusMessage(nextPatient.Status, nextPatient.EstimatedWaitTime ?? 0),
+        ConsultationDuration = nextPatient.ConsultationDuration,
+        AiPrediction = aiPrediction
     };
 }
 
@@ -489,6 +528,7 @@ public async Task<List<QueueResponseDto>> GetTodaysQueueAsync()
             Status = q.Status ?? "",
             CurrentPosition = q.CurrentPosition ?? 0,
             EstimatedWaitTime = q.EstimatedWaitTime ?? 0,
+            StatusMessage = BuildStatusMessage(q.Status, q.EstimatedWaitTime ?? 0),
             ConsultationDuration = q.ConsultationDuration,
             AiPrediction = q.AiPredictions
                 .OrderByDescending(a => a.GeneratedAt)
@@ -531,6 +571,7 @@ public async Task<QueueResponseDto?> GetMyQueueAsync(int patientId)
             Status = q.Status ?? "",
             CurrentPosition = q.CurrentPosition ?? 0,
             EstimatedWaitTime = q.EstimatedWaitTime ?? 0,
+            StatusMessage = BuildStatusMessage(q.Status, q.EstimatedWaitTime ?? 0),
             ConsultationDuration = q.ConsultationDuration,
             AiPrediction = q.AiPredictions
                 .OrderByDescending(a => a.GeneratedAt)

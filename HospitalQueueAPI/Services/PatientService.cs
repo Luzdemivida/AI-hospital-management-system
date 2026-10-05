@@ -28,8 +28,10 @@ namespace HospitalQueueAPI.Services
             var patient = new Patient
             {
                 UserId = userId,
+                Age = request.Age,
                 DateOfBirth = request.DateOfBirth,
                 Gender = request.Gender,
+                Occupation = request.Occupation,
                 Address = request.Address,
                 EmergencyContactName = request.EmergencyContactName,
                 EmergencyContactPhone = request.EmergencyContactPhone,
@@ -46,13 +48,21 @@ namespace HospitalQueueAPI.Services
 
             return new PatientResponseDto
             {
-                UserId = patient.UserId,
-                FullName = $"{user!.FirstName} {user.LastName}",
-                DateOfBirth = patient.DateOfBirth ?? default,
-                Gender = patient.Gender ?? "",
-                Address = patient.Address ?? "",
-                BloodGroup = patient.BloodGroup ?? "",
-                Allergies = patient.Allergies ?? ""
+                UserId              = patient.UserId,
+                FirstName           = user!.FirstName ?? "",
+                LastName            = user.LastName   ?? "",
+                FullName            = $"{user.FirstName} {user.LastName}",
+                Email               = user.Email      ?? "",
+                Phone               = user.Phone      ?? "",
+                Age                 = patient.Age,
+                DateOfBirth         = patient.DateOfBirth    ?? default,
+                Gender              = patient.Gender                  ?? "",
+                Occupation          = patient.Occupation              ?? "",
+                Address             = patient.Address                 ?? "",
+                BloodGroup          = patient.BloodGroup              ?? "",
+                Allergies           = patient.Allergies               ?? "",
+                EmergencyContactName  = patient.EmergencyContactName  ?? "",
+                EmergencyContactPhone = patient.EmergencyContactPhone ?? ""
             };
         }
 
@@ -67,13 +77,21 @@ namespace HospitalQueueAPI.Services
 
             return new PatientResponseDto
             {
-                UserId = patient.UserId,
-                FullName = $"{patient.User.FirstName} {patient.User.LastName}",
-                DateOfBirth = patient.DateOfBirth ?? default,
-                Gender = patient.Gender ?? "",
-                Address = patient.Address ?? "",
-                BloodGroup = patient.BloodGroup ?? "",
-                Allergies = patient.Allergies ?? ""
+                UserId              = patient.UserId,
+                FirstName           = patient.User.FirstName ?? "",
+                LastName            = patient.User.LastName  ?? "",
+                FullName            = $"{patient.User.FirstName} {patient.User.LastName}",
+                Email               = patient.User.Email     ?? "",
+                Phone               = patient.User.Phone     ?? "",
+                Age                 = patient.Age,
+                DateOfBirth         = patient.DateOfBirth    ?? default,
+                Gender              = patient.Gender                  ?? "",
+                Occupation          = patient.Occupation              ?? "",
+                Address             = patient.Address                 ?? "",
+                BloodGroup          = patient.BloodGroup              ?? "",
+                Allergies           = patient.Allergies               ?? "",
+                EmergencyContactName  = patient.EmergencyContactName  ?? "",
+                EmergencyContactPhone = patient.EmergencyContactPhone ?? ""
             };
         }
 
@@ -88,6 +106,8 @@ namespace HospitalQueueAPI.Services
             if (patient == null)
                 return null;
 
+            patient.Age = request.Age;
+            patient.Occupation = request.Occupation;
             patient.Address = request.Address;
             patient.EmergencyContactName = request.EmergencyContactName;
             patient.EmergencyContactPhone = request.EmergencyContactPhone;
@@ -98,13 +118,21 @@ namespace HospitalQueueAPI.Services
 
             return new PatientResponseDto
             {
-                UserId = patient.UserId,
-                FullName = $"{patient.User.FirstName} {patient.User.LastName}",
-                DateOfBirth = patient.DateOfBirth ?? default,
-                Gender = patient.Gender ?? "",
-                Address = patient.Address ?? "",
-                BloodGroup = patient.BloodGroup ?? "",
-                Allergies = patient.Allergies ?? ""
+                UserId              = patient.UserId,
+                FirstName           = patient.User.FirstName ?? "",
+                LastName            = patient.User.LastName  ?? "",
+                FullName            = $"{patient.User.FirstName} {patient.User.LastName}",
+                Email               = patient.User.Email     ?? "",
+                Phone               = patient.User.Phone     ?? "",
+                Age                 = patient.Age,
+                DateOfBirth         = patient.DateOfBirth    ?? default,
+                Gender              = patient.Gender                  ?? "",
+                Occupation          = patient.Occupation              ?? "",
+                Address             = patient.Address                 ?? "",
+                BloodGroup          = patient.BloodGroup              ?? "",
+                Allergies           = patient.Allergies               ?? "",
+                EmergencyContactName  = patient.EmergencyContactName  ?? "",
+                EmergencyContactPhone = patient.EmergencyContactPhone ?? ""
             };
         }
 

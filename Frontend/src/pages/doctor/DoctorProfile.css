@@ -1,0 +1,286 @@
+
+/* =========================================================
+   DOCTOR PROFILE PAGE
+========================================================= */
+
+.doctor-profile-section {
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+.doctor-profile-card {
+    width: 100%;
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 35px;
+    /* use shared glass card appearance */
+    background: var(--card-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    box-shadow:
+        0 20px 50px rgba(14, 165, 233, 0.06),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+.doctor-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(229,241,255,0.8);
+}
+
+.doctor-profile-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--brand-600), var(--brand-500));
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.doctor-profile-header h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    color: #153b5a;
+}
+
+.doctor-profile-header p {
+    margin: 0;
+    color: #6d8497;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.doctor-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 22px;
+}
+
+.doctor-form-group label {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #26374a;
+}
+
+.doctor-form-group input,
+.doctor-form-group select,
+.doctor-form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 15px;
+    border: 1px solid rgba(219,233,247,0.9);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.9);
+    color: #153b5a;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s ease;
+    font-family: inherit;
+}
+
+.doctor-form-group input:focus,
+.doctor-form-group select:focus,
+.doctor-form-group textarea:focus {
+    border-color: var(--brand-600);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+}
+
+.doctor-form-group input:disabled,
+.doctor-form-group select:disabled,
+.doctor-form-group textarea:disabled {
+    background: rgba(255,255,255,0.5);
+    color: #6b879a;
+    cursor: not-allowed;
+}
+
+.doctor-form-group textarea {
+    resize: vertical;
+    min-height: 130px;
+}
+
+
+/* =========================================================
+   TWO-COLUMN FORM ROW
+========================================================= */
+
+.doctor-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+
+/* =========================================================
+   CONSULTATION FEE
+========================================================= */
+
+.doctor-fee-input {
+    display: flex;
+    align-items: stretch;
+}
+
+.doctor-fee-input span {
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    background: #f1f8ff;
+    border: 1px solid rgba(229,241,255,0.8);
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    color: #70889b;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.doctor-fee-input input {
+    border-radius: 0 10px 10px 0;
+}
+
+
+/* =========================================================
+   CREATED AT
+========================================================= */
+
+.doctor-form-group small {
+    margin-top: 7px;
+    color: #6d8497;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.doctor-profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(229,241,255,0.8);
+}
+
+.doctor-primary-button,
+.doctor-cancel-button {
+    border: none;
+    border-radius: 10px;
+    padding: 13px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.doctor-primary-button {
+    background: var(--brand-600);
+    color: white;
+}
+
+.doctor-primary-button:hover {
+    background: var(--brand-700);
+    transform: translateY(-1px);
+}
+
+.doctor-cancel-button {
+    background: #eaf4ff;
+    color: #274f6c;
+}
+
+.doctor-cancel-button:hover {
+    background: #dbeeff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .doctor-profile-card {
+        padding: 24px;
+    }
+
+    .doctor-form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .doctor-profile-header {
+        align-items: flex-start;
+    }
+
+    .doctor-profile-actions {
+        flex-direction: column;
+    }
+
+    .doctor-primary-button,
+    .doctor-cancel-button {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   DOCTOR PROFILE IMAGE ICONS
+   ========================================================= */
+
+.doctor-nav-image {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.doctor-nav-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
+/* =========================================================
+   DOCTOR PROFILE IMAGE
+   ========================================================= */
+
+.doctor-profile-avatar {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.doctor-profile-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    border-radius: 18px;
+}

@@ -33,6 +33,24 @@ public class AdminController : ControllerBase
     // Users
     // ===========================
 
+    /// <summary>
+    /// Creates a new Doctor or Admin account.
+    /// Public self-registration is restricted to Patient role only.
+    /// </summary>
+    [HttpPost("users")]
+    public async Task<IActionResult> CreateUser(CreateUserDto request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var (success, message, user) = await _adminService.CreateUserAsync(request);
+
+        if (!success)
+            return BadRequest(new { success = false, message });
+
+        return Ok(new { success = true, message, data = user });
+    }
+
     [HttpGet("users")]
     public async Task<IActionResult> GetUsers()
     {

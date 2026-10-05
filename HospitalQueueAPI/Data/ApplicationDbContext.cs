@@ -302,6 +302,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.BloodGroup)
                 .HasMaxLength(5)
                 .HasColumnName("blood_group");
+            entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
@@ -310,6 +311,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.EmergencyContactName)
                 .HasMaxLength(100)
                 .HasColumnName("emergency_contact_name");
+            entity.Property(e => e.Occupation)
+                .HasMaxLength(100)
+                .HasColumnName("occupation");
             entity.Property(e => e.EmergencyContactPhone)
                 .HasMaxLength(20)
                 .HasColumnName("emergency_contact_phone");

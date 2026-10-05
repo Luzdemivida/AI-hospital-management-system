@@ -1,6 +1,7 @@
 using HospitalQueueAPI.Data;
 using HospitalQueueAPI.DTOs.Doctor;
 using HospitalQueueAPI.Interfaces;
+using HospitalQueueAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalQueueAPI.Services;
@@ -17,6 +18,62 @@ public class DoctorService : IDoctorService
         _context = context;
         _queueService = queueService;
     }
+
+    private async Task<Doctor?> EnsureDoctorProfileExistsAsync(int doctorUserId)
+    {
+        var doctor = await _context.Doctors
+            .Include(d => d.User)
+            .Include(d => d.Department)
+            .FirstOrDefaultAsync(d => d.UserId == doctorUserId);
+
+        if (doctor != null)
+            return doctor;
+
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == doctorUserId);
+
+        if (user == null)
+            return null;
+
+        var department = await _context.Departments
+            .OrderBy(d => d.Id)
+            .FirstOrDefaultAsync();
+
+        if (department == null)
+        {
+            department = new HospitalQueueAPI.Models.Department
+            {
+                DepartmentName = "General Medicine",
+                Description = "Default department for newly created doctors.",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Departments.Add(department);
+            await _context.SaveChangesAsync();
+        }
+
+        var profile = new HospitalQueueAPI.Models.Doctor
+        {
+            UserId = doctorUserId,
+            DepartmentId = department.Id,
+            Specialization = "General Medicine",
+            ExperienceYears = 0,
+            AverageConsultationTime = 15,
+            LicenseNumber = $"DOC-{doctorUserId:000000}",
+            ConsultationFee = 0m,
+            Biography = "Doctor profile created automatically during account setup.",
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.Doctors.Add(profile);
+        await _context.SaveChangesAsync();
+
+        return await _context.Doctors
+            .Include(d => d.User)
+            .Include(d => d.Department)
+            .FirstOrDefaultAsync(d => d.UserId == doctorUserId);
+    }
+
     // ============================================================
     // TODAY'S PATIENTS
     // ============================================================
@@ -37,6 +94,7 @@ public class DoctorService : IDoctorService
                 .ThenInclude(d => d.Department)
 
             .Include(a => a.QueueEntries)
+                .ThenInclude(q => q.AiPredictions)
 
             .Where(a =>
                 a.DoctorId == doctorUserId &&
@@ -50,6 +108,10 @@ public class DoctorService : IDoctorService
         {
             var queue = a.QueueEntries
                 .OrderBy(q => q.QueueNumber)
+                .FirstOrDefault();
+
+            var latestPrediction = queue?.AiPredictions
+                .OrderByDescending(p => p.GeneratedAt)
                 .FirstOrDefault();
 
             return new DoctorDashboardDto
@@ -82,7 +144,10 @@ public class DoctorService : IDoctorService
                     queue?.CurrentPosition ?? 0,
 
                 EstimatedWaitTime =
-                    queue?.EstimatedWaitTime ?? 0
+                    queue?.EstimatedWaitTime ?? 0,
+
+                AiPrediction =
+                    latestPrediction?.Explanation ?? null
             };
         });
 
@@ -104,6 +169,8 @@ public class DoctorService : IDoctorService
             .Include(q => q.Appointment)
                 .ThenInclude(a => a.Doctor)
                     .ThenInclude(d => d.Department)
+
+            .Include(q => q.AiPredictions)
 
             .Where(q =>
                 q.Status == "Serving" &&
@@ -144,7 +211,13 @@ public class DoctorService : IDoctorService
                 queue.CurrentPosition ?? 0,
 
             EstimatedWaitTime =
-                queue.EstimatedWaitTime ?? 0
+                queue.EstimatedWaitTime ?? 0,
+
+            AiPrediction =
+                queue.AiPredictions
+                    .OrderByDescending(p => p.GeneratedAt)
+                    .Select(p => p.Explanation)
+                    .FirstOrDefault()
         };
     }
 
@@ -163,6 +236,8 @@ public class DoctorService : IDoctorService
             .Include(q => q.Appointment)
                 .ThenInclude(a => a.Doctor)
                     .ThenInclude(d => d.Department)
+
+            .Include(q => q.AiPredictions)
 
             .Where(q =>
                 q.Status == "Completed" &&
@@ -202,7 +277,13 @@ public class DoctorService : IDoctorService
                 q.CurrentPosition ?? 0,
 
             EstimatedWaitTime =
-                q.EstimatedWaitTime ?? 0
+                q.EstimatedWaitTime ?? 0,
+
+            AiPrediction =
+                q.AiPredictions
+                    .OrderByDescending(p => p.GeneratedAt)
+                    .Select(p => p.Explanation)
+                    .FirstOrDefault()
 
         }).ToList();
     }
@@ -217,8 +298,72 @@ public class DoctorService : IDoctorService
                 DoctorId = d.UserId,
                 FullName = $"{d.User.FirstName} {d.User.LastName}",
                 Department = d.Department.DepartmentName,
-                Specialization = d.Specialization ?? string.Empty
+                Specialization = d.Specialization ?? string.Empty,
+                Biography = d.Biography ?? string.Empty
             })
             .ToListAsync();
+    }
+
+    // ============================================================
+    // DOCTOR PROFILE
+    // ============================================================
+
+    public async Task<DoctorProfileDto?> GetProfileAsync(int doctorUserId)
+    {
+        var doctor = await EnsureDoctorProfileExistsAsync(doctorUserId);
+
+        if (doctor == null)
+            return null;
+
+        return new DoctorProfileDto
+        {
+            UserId                  = doctor.UserId,
+            FirstName               = doctor.User.FirstName ?? "",
+            LastName                = doctor.User.LastName  ?? "",
+            Email                   = doctor.User.Email     ?? "",
+            Phone                   = doctor.User.Phone     ?? "",
+            Specialization          = doctor.Specialization,
+            Department              = doctor.Department?.DepartmentName,
+            ExperienceYears         = doctor.ExperienceYears,
+            AverageConsultationTime = doctor.AverageConsultationTime,
+            LicenseNumber           = doctor.LicenseNumber,
+            ConsultationFee         = doctor.ConsultationFee,
+            Biography               = doctor.Biography,
+            CreatedAt               = doctor.CreatedAt
+        };
+    }
+
+    public async Task<DoctorProfileDto?> UpdateProfileAsync(int doctorUserId, UpdateDoctorProfileDto request)
+    {
+        var doctor = await EnsureDoctorProfileExistsAsync(doctorUserId);
+
+        if (doctor == null)
+            return null;
+
+        if (request.Specialization          != null) doctor.Specialization          = request.Specialization;
+        if (request.ExperienceYears         != null) doctor.ExperienceYears         = request.ExperienceYears;
+        if (request.AverageConsultationTime != null) doctor.AverageConsultationTime = request.AverageConsultationTime.Value;
+        if (request.LicenseNumber           != null) doctor.LicenseNumber           = request.LicenseNumber;
+        if (request.ConsultationFee         != null) doctor.ConsultationFee         = request.ConsultationFee;
+        if (request.Biography               != null) doctor.Biography               = request.Biography;
+
+        await _context.SaveChangesAsync();
+
+        return new DoctorProfileDto
+        {
+            UserId                  = doctor.UserId,
+            FirstName               = doctor.User.FirstName ?? "",
+            LastName                = doctor.User.LastName  ?? "",
+            Email                   = doctor.User.Email     ?? "",
+            Phone                   = doctor.User.Phone     ?? "",
+            Specialization          = doctor.Specialization,
+            Department              = doctor.Department?.DepartmentName,
+            ExperienceYears         = doctor.ExperienceYears,
+            AverageConsultationTime = doctor.AverageConsultationTime,
+            LicenseNumber           = doctor.LicenseNumber,
+            ConsultationFee         = doctor.ConsultationFee,
+            Biography               = doctor.Biography,
+            CreatedAt               = doctor.CreatedAt
+        };
     }
 }

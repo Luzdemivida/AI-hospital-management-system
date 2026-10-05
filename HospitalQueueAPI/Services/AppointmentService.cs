@@ -10,13 +10,16 @@ public class AppointmentService : IAppointmentService
 {
     private readonly ApplicationDbContext _context;
     private readonly IQueueService _queueService;
+    private readonly NotificationService _notificationService;
 
     public AppointmentService(
         ApplicationDbContext context,
-        IQueueService queueService)
+        IQueueService queueService,
+        NotificationService notificationService)
     {
         _context = context;
         _queueService = queueService;
+        _notificationService = notificationService;
     }
 
     public async Task<AppointmentCreationResult> CreateAppointmentAsync(
@@ -67,6 +70,12 @@ public class AppointmentService : IAppointmentService
         await _context.SaveChangesAsync();
 
         await _queueService.GenerateQueueEntryAsync(appointment.Id);
+
+        await _notificationService.CreateNotificationAsync(
+            userId,
+            "Appointment booked",
+            $"Your appointment with Dr. {doctor.User.FirstName} {doctor.User.LastName} is scheduled for {appointment.AppointmentDate:yyyy-MM-dd} at {appointment.AppointmentTime:hh:mm tt}.",
+            "Appointment");
 
         var user = await _context.Users
             .FirstAsync(u => u.Id == userId);

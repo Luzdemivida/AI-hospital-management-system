@@ -1,6 +1,8 @@
+using HospitalQueueAPI.Hubs;
 using HospitalQueueAPI.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace HospitalQueueAPI.Controllers;
@@ -11,10 +13,17 @@ namespace HospitalQueueAPI.Controllers;
 public class QueueController : ControllerBase
 {
     private readonly IQueueService _queueService;
+    private readonly IHubContext<QueueHub> _hubContext;
 
-    public QueueController(IQueueService queueService)
+    public QueueController(IQueueService queueService, IHubContext<QueueHub> hubContext)
     {
         _queueService = queueService;
+        _hubContext = hubContext;
+    }
+
+    private async Task NotifyQueueUpdated()
+    {
+        await _hubContext.Clients.All.SendAsync("QueueUpdated");
     }
 
 
@@ -79,6 +88,8 @@ public class QueueController : ControllerBase
             });
         }
 
+        await NotifyQueueUpdated();
+
         return Ok(queue);
     }
 
@@ -102,6 +113,8 @@ public class QueueController : ControllerBase
                 message = "No patients are waiting."
             });
         }
+
+        await NotifyQueueUpdated();
 
         return Ok(queue);
     }
@@ -130,6 +143,8 @@ public class QueueController : ControllerBase
         }
 
 
+        await NotifyQueueUpdated();
+
         return Ok(new
         {
             message = "Consultation completed successfully."
@@ -156,23 +171,40 @@ public class QueueController : ControllerBase
         return int.Parse(userId);
     }
     [HttpGet("{queueId}/summary")]
-public async Task<IActionResult> Summary(int queueId)
-{
-    return Ok(await _queueService.GetPatientSummaryAsync(queueId));
-}
+    [Authorize(Roles = "Doctor,Admin")]
+    public async Task<IActionResult> Summary(int queueId)
+    {
+        return Ok(await _queueService.GetPatientSummaryAsync(queueId));
+    }
 
-[HttpPost("{queueId}/refresh-ai")]
-public async Task<IActionResult> RefreshAI(int queueId)
-{
-    await _queueService.RegeneratePredictionAsync(queueId);
+    [HttpPost("{queueId}/refresh-ai")]
+    [Authorize(Roles = "Doctor,Admin")]
+    public async Task<IActionResult> RefreshAI(int queueId)
+    {
+        await _queueService.RegeneratePredictionAsync(queueId);
+        await NotifyQueueUpdated();
 
-    return Ok("AI Prediction Updated");
-}
+        return Ok("AI Prediction Updated");
+    }
 
 [HttpGet("patient-summary/{appointmentId}")]
+[Authorize(Roles = "Doctor,Admin")]
 public async Task<IActionResult> PatientSummary(int appointmentId)
 {
-    return Ok(await _queueService.GetQueueSummaryAsync());
+    // Find the queue entry for this appointment, then delegate to the
+    // existing AI patient-summary method which uses the queue entry id.
+    var todayQueue = await _queueService.GetTodaysQueueAsync();
+    var match = todayQueue.FirstOrDefault(q => q.AppointmentId == appointmentId);
+
+    if (match == null)
+        return NotFound(new { message = "No queue entry found for this appointment." });
+
+    var summary = await _queueService.GetPatientSummaryAsync(match.QueueId);
+
+    if (summary == null)
+        return NotFound(new { message = "Patient summary not found." });
+
+    return Ok(summary);
 }
 }
 

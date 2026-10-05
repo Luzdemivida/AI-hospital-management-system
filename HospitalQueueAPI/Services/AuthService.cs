@@ -28,10 +28,24 @@ namespace HospitalQueueAPI.Services
             string role = request.Role.Trim().ToUpperInvariant() switch
             {
                 "PATIENT" => "Patient",
-                "DOCTOR" => "Doctor",
-                "ADMIN" => "Admin",
-                _ => "Patient"
+                "DOCTOR"  => "Doctor",
+                "ADMIN"   => "Admin",
+                _         => "Patient"
             };
+
+            // ── Security: public registration is for Patients only ──────────
+            // Doctors and Admins must be created by an existing Admin through
+            // the admin panel (POST /api/Admin/users).
+            if (role != "Patient")
+            {
+                return new AuthResponse
+                {
+                    Success = false,
+                    Message = "Public registration is only available for patients. " +
+                              "Doctor and Admin accounts must be created by an administrator."
+                };
+            }
+            // ────────────────────────────────────────────────────────────────
 
             // Check if email already exists
             bool exists = await _context.Users

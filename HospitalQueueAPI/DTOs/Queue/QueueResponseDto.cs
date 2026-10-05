@@ -24,6 +24,8 @@ public class QueueResponseDto
 
     public int EstimatedWaitTime { get; set; }
 
+    public string? StatusMessage { get; set; }
+
     public int? ConsultationDuration { get; set; }
 
     public string? AiPrediction { get; set; }

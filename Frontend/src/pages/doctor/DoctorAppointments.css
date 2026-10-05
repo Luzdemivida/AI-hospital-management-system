@@ -1,0 +1,361 @@
+
+/* =========================================================
+   DOCTOR APPOINTMENTS
+   ========================================================= */
+
+.doctor-appointments-section {
+    width: 100%;
+}
+
+.doctor-appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.doctor-appointment-card {
+    padding: 28px;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+}
+
+.doctor-appointment-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.doctor-appointment-header > div > span {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #718096;
+}
+
+.doctor-appointment-header h2 {
+    margin: 0 0 6px;
+    color: #153b5a;
+    font-size: 22px;
+}
+
+.doctor-appointment-header p {
+    margin: 0;
+    color: #718096;
+}
+
+.doctor-appointment-header strong {
+    color: #3949ab;
+}
+
+.doctor-appointment-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.5);
+    color: #25865d;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.doctor-appointment-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding-top: 22px;
+}
+
+.doctor-appointment-details div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.doctor-appointment-details span {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    color: #9ca3af;
+}
+
+.doctor-appointment-details strong {
+    font-size: 14px;
+    color: #374151;
+}
+
+@media (max-width: 900px) {
+
+    .doctor-appointment-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .doctor-appointment-card {
+        padding: 20px;
+    }
+
+    .doctor-appointment-header {
+        flex-direction: column;
+    }
+
+    .doctor-appointment-details {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =========================================================
+   DOCTOR NAVIGATION IMAGE ICONS
+========================================================= */
+
+.doctor-nav-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   DOCTOR LOGOUT IMAGE
+========================================================= */
+
+.doctor-logout-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   DOCTOR EMPTY APPOINTMENTS IMAGE
+========================================================= */
+
+.doctor-empty-icon {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 15px;
+}
+
+
+/* =========================================================
+   NAVIGATION ALIGNMENT
+========================================================= */
+
+.doctor-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* =========================================================
+   LOGOUT ALIGNMENT
+========================================================= */
+
+.doctor-logout-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* =========================================================
+   APPOINTMENT CARD ACTION BUTTONS
+========================================================= */
+
+.doctor-appt-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 18px;
+    margin-top: 18px;
+    border-top: 1px solid #edf0f3;
+}
+
+.appt-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    white-space: nowrap;
+}
+
+.appt-action-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.appt-action-btn.ai {
+    border: 1px solid #b8dfe0;
+    background: #f0f9ff;
+    color: #0b8792;
+}
+
+.appt-action-btn.ai:hover:not(:disabled) {
+    background: #ddf4f5;
+    transform: translateY(-1px);
+}
+
+.appt-action-btn.profile {
+    border: 1px solid #c7d2fe;
+    background: #f5f3ff;
+    color: #4338ca;
+}
+
+.appt-action-btn.profile:hover:not(:disabled) {
+    background: #e0e7ff;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   APPOINTMENT STATUS BADGES
+========================================================= */
+
+.appt-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.appt-status.scheduled { background: #eff6ff; color: #1d4ed8; }
+.appt-status.waiting   { background: #fffbeb; color: #92400e; }
+.appt-status.serving   { background: #fff7ed; color: #c2410c; }
+.appt-status.completed { background: #f0fdf4; color: #15803d; }
+
+
+/* =========================================================
+   MODAL — shared (keep in sync with DoctorQueue / Dashboard)
+========================================================= */
+
+.doctor-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 30, 60, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 20px;
+}
+
+.doctor-modal {
+    width: 100%;
+    max-width: 520px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 30px 80px rgba(10, 40, 80, 0.18);
+    overflow: hidden;
+    animation: apptModalIn 0.2s ease;
+}
+
+@keyframes apptModalIn {
+    from { opacity: 0; transform: translateY(14px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.doctor-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid #e8f0f6;
+}
+
+.doctor-modal-header p {
+    margin: 0 0 5px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    color: #0b8792;
+}
+
+.doctor-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #173b54;
+}
+
+.doctor-modal-header > button {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.doctor-modal-header > button:hover { background: #e2e8f0; }
+
+.doctor-modal-content {
+    padding: 22px 24px 24px;
+}
+
+.doctor-profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 24px;
+}
+
+.doctor-profile-field span {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: #0b8792;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.doctor-profile-field strong {
+    display: block;
+    font-size: 14px;
+    color: #173b54;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.primary-button {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #0b8792;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.primary-button:hover { background: #086f79; }

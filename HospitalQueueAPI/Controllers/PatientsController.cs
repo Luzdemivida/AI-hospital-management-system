@@ -63,6 +63,23 @@ namespace HospitalQueueAPI.Controllers
             return Ok(result);
         }
 
+        // Allow doctors and admins to fetch a specific patient's profile by user id
+        [HttpGet("{userId}")]
+        [Authorize(Roles = "Doctor,Admin")]
+        public async Task<IActionResult> GetProfileByUserId(int userId)
+        {
+            var result = await _patientService.GetProfileAsync(userId);
+
+            if (result == null)
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Patient profile not found."
+                });
+
+            return Ok(result);
+        }
+
         [HttpPut("me")]
         public async Task<IActionResult> UpdateProfile(UpdatePatientDto request)
         {

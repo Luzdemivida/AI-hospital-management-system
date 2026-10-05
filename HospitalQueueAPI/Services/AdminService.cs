@@ -1,6 +1,8 @@
+using BCrypt.Net;
 using HospitalQueueAPI.Data;
 using HospitalQueueAPI.DTOs.Admin;
 using HospitalQueueAPI.Interfaces;
+using HospitalQueueAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalQueueAPI.Services;
@@ -67,6 +69,103 @@ public class AdminService : IAdminService
             CompletedPatients = completedPatients,
             AverageWaitTime = averageWaitTime
         };
+    }
+
+    // ===================================================
+    // CREATE USER (Admin-only — for Doctor / Admin accounts)
+    // ===================================================
+
+    public async Task<(bool Success, string Message, UserDto? User)> CreateUserAsync(CreateUserDto request)
+    {
+        // Only Doctor and Admin roles are allowed through this path.
+        // Patients self-register via POST /api/Auth/register.
+        string role = request.Role.Trim().ToUpperInvariant() switch
+        {
+            "DOCTOR" => "Doctor",
+            "ADMIN"  => "Admin",
+            _        => ""
+        };
+
+        if (string.IsNullOrEmpty(role))
+        {
+            return (false,
+                "Invalid role. Only 'Doctor' or 'Admin' accounts can be created through this endpoint.",
+                null);
+        }
+
+        string email = request.Email.Trim().ToLowerInvariant();
+
+        bool exists = await _context.Users
+            .AnyAsync(u => u.Email.ToLower() == email);
+
+        if (exists)
+            return (false, "A user with that email address already exists.", null);
+
+        if (string.IsNullOrWhiteSpace(request.Password))
+            return (false, "A temporary password is required.", null);
+
+        var user = new User
+        {
+            FirstName    = request.FirstName.Trim(),
+            LastName     = request.LastName.Trim(),
+            Email        = email,
+            Phone        = string.IsNullOrWhiteSpace(request.Phone) ? null : request.Phone.Trim(),
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            Role         = role,
+            Status       = "Active",
+            CreatedAt    = DateTime.UtcNow
+        };
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        if (role == "Doctor")
+        {
+            var department = await _context.Departments
+                .OrderBy(d => d.Id)
+                .FirstOrDefaultAsync();
+
+            if (department == null)
+            {
+                department = new Department
+                {
+                    DepartmentName = "General Medicine",
+                    Description = "Default department for newly created doctors.",
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _context.Departments.Add(department);
+                await _context.SaveChangesAsync();
+            }
+
+            var doctorProfile = new Doctor
+            {
+                UserId = user.Id,
+                DepartmentId = department.Id,
+                Specialization = "General Medicine",
+                ExperienceYears = 0,
+                AverageConsultationTime = 15,
+                LicenseNumber = $"DOC-{user.Id:000000}",
+                ConsultationFee = 0m,
+                Biography = "Doctor profile created automatically during account setup.",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Doctors.Add(doctorProfile);
+            await _context.SaveChangesAsync();
+        }
+
+        var dto = new UserDto
+        {
+            Id        = user.Id,
+            FirstName = user.FirstName,
+            LastName  = user.LastName,
+            Email     = user.Email,
+            Role      = user.Role,
+            Status    = user.Status ?? "Active"
+        };
+
+        return (true, $"{role} account created successfully.", dto);
     }
 
     // ===================================================

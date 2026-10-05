@@ -7,7 +7,11 @@ public partial class Patient
 {
     public int UserId { get; set; }
 
+    public int? Age { get; set; }
+
     public DateOnly? DateOfBirth { get; set; }
+
+    public string? Occupation { get; set; }
 
     public string? Gender { get; set; }
 
